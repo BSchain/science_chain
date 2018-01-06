@@ -226,7 +226,7 @@ how to track the coin flow?
 class Coin:
     def __init__(self):
         """
-        FIXME: need to think more
+        TODO: need to think more
         """
         self.credit = 0 # total
         self.block_height = 0
