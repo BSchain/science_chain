@@ -166,7 +166,72 @@ class Blockchain():
         diff_str = '0' * diff
         return mine_hash[:diff] == diff_str
 
+class Block:
+    def __init__(self):
+        pass
+
+    def new_block(self,index, proof, transactions, previous_hash, timestamp = None):
+
+        """
+        :param index: the block height
+        :param proof: the proof to calculate the diff (using proof of work)
+        :param transactions: (current_transactions)
+        :param previous_hash: using hash(block)
+        :param timestamp: time() or using passed parameter
+        :return:
+        """
+        block = {
+            'index': index,
+            'timestamp': timestamp or time(),
+            'proof': proof,
+            'transactions' : transactions,
+            'previous_hash': previous_hash,
+        }
+        return block
+
+class Transaction:
+    def __init__(self):
+        pass
+
+    def new_transaction(self, action=None, buyer=None, seller=None, credit=0, coin_in=None, coin_out=None, fee=0):
+
+        """
+        :param action: upload, buy, download, login, recharge, close
+        :param buyer:  uuid
+        :param seller: uuid
+        :param credit: int
+        :param coin_in: (should be the previous out)
+        :param coin_out:
+        :return:
+        """
+        transaction = {
+            'action': action,
+            # 'buyer': buyer,
+            # 'seller': seller,
+            'credir': credit,
+            'coin_in': coin_in,
+            'coin_out': coin_out,
+            'fee': fee,
+        }
+
+        return transaction
+
+    def save_transaction_to_file(self):
+        pass
 
 
-
+"""
+how to track the coin flow?
+"""
+class Coin:
+    def __init__(self):
+        """
+        FIXME: need to think more
+        """
+        self.credit = 0 # total
+        self.block_height = 0
+        self.credit_left = 0
+        self.credit_use = 0
+        self.buyer = None
+        self.seller = 0
 
