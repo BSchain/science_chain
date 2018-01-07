@@ -7,18 +7,34 @@
 
 class Coin:
     def __init__(self):
-        self.spend = None
-        self.address = None
-        self.coin = None
+        self.coin_uuid = None
+        self.number_coin = None
         self.owner = None
-        pass
 
-    def new_coin(self):
-        pass
+    def new_coin(self, coin_uuid, number_coin, owner):
+        self.coin_uuid = coin_uuid
+        self.number_coin = number_coin
+        self.owner = owner
+
+    def to_dict(self):
+        coin = {
+            'coin_uuid': self.coin_uuid,
+            'number_coin': self.number_coin,
+            'owner': self.owner,
+        }
+        return coin
 
     def __eq__(self, other):
-        pass
+        return self.coin_uuid == other.coin_uuid and \
+               self.number_coin == other.number_coin and \
+               self.owner == other.owner
 
     def __ne__(self, other):
-        pass
+        return not self.__eq__(other)
 
+# test coin
+"""
+coin = Coin()
+coin.new_coin(1,1,1)
+print(coin.to_dict())
+"""

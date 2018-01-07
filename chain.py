@@ -9,10 +9,6 @@ class Chain:
     def __init__(self):
         self.chain = None
         self.chain_length = None
-        
-
-    def __len__(self):
-        pass
 
     def __eq__(self, other):
         pass
