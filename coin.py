@@ -32,9 +32,3 @@ class Coin:
     def __ne__(self, other):
         return not self.__eq__(other)
 
-# test coin
-"""
-coin = Coin()
-coin.new_coin(1,1,1)
-print(coin.to_dict())
-"""

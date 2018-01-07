@@ -4,9 +4,6 @@
 # @FileName: transaction.py
 # @Software: PyCharm
 # @Blog    : http://zpfbuaa.github.io
-from coin import *
-from time import time
-from uuid import uuid4
 
 class Transaction:
     def __init__(self):
@@ -56,38 +53,5 @@ class Transaction:
         self.buyer = buyer
         self.data_uuid = data_uuid
         self.credit = credit
-
-# test transaction
-"""
-action = 'buy'
-seller = '111111'
-buyer = '000000'
-
-coin1 = coin.Coin()
-coin1.new_coin(1,1.2,buyer)
-
-coin2 = coin.Coin()
-coin2.new_coin(2,2.2,buyer)
-
-coin3 = coin.Coin()
-coin3.new_coin(3,3.4,seller)
-
-in_coins = []
-in_coins.append(coin1.to_dict())
-in_coins.append(coin2.to_dict())
-
-out_coins = []
-out_coins.append(coin3.to_dict())
-
-timestamp = time()
-credit = 3.4
-data_uuid = str(uuid4()).replace('-','')
-
-ts = Transaction()
-ts.new_transaction(in_coins, out_coins, timestamp, action, seller, buyer, data_uuid, credit)
-
-print(ts.to_dict())
-
-"""
 
 

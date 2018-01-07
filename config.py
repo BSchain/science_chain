@@ -5,5 +5,6 @@
 # @Software: PyCharm
 # @Blog    : http://zpfbuaa.github.io
 
-BLOCK_SAVE_ROOT = 'blocks/'
-BLOCK_SAVE_SUFFIX = '.json'
+BLOCK_SAVE_ROOT = 'blocks/' # the blocks saving root
+BLOCK_SAVE_SUFFIX = '.json' # block suffix
+BLOCK_SPLIT = '_' # e.g.  1_hash.json  2018_hash.json (index + '_' + hash + '.json')

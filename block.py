@@ -12,6 +12,7 @@ from coin import *
 from transaction import *
 from time import time
 from uuid import uuid4
+from utils import *
 
 class Block:
     def __init__(self):
@@ -21,7 +22,7 @@ class Block:
         self.transactions = None
         self.nonce = None
         # just to calculate the self.hash
-        self.hash = None
+        self.hash_self = None
 
     def __repr__(self):
         pass
@@ -42,9 +43,11 @@ class Block:
     def __lt__(self, other_block):
         return self.index < other_block.index
 
-    def self_save(self):
+    def save_block(self):
         assert os.path.exists(config.BLOCK_SAVE_ROOT) , ('Blocks save root file not exist')
-
+        # path = 'blocks/' + str(index) + '_' + str(block_hash) + '.json'
+        #save_block_path = config.BLOCK_SAVE_ROOT+ str(self.index)+config.BLOCK_SPLIT+str(self.hash_self) + config.BLOCK_SAVE_SUFFIX
+        # path = 'blocks/' + str(index) + '.json'
         save_block_path = config.BLOCK_SAVE_ROOT+ str(self.index) + config.BLOCK_SAVE_SUFFIX
         with open(save_block_path, 'w') as json_file:
             json_file.write(json.dumps(self.to_dict()))
@@ -68,52 +71,4 @@ class Block:
         self.prev_hash = prev_hash
         self.transactions = transactions
         self.nonce = nonce
-
-# test block
-"""
-action = 'buy'
-seller = '111111'
-buyer = '000000'
-
-coin1 = Coin()
-coin1.new_coin(1,1.2,buyer)
-
-coin2 = Coin()
-coin2.new_coin(2,2.2,buyer)
-
-coin3 = Coin()
-coin3.new_coin(3,3.4,seller)
-
-in_coins = []
-in_coins.append(coin1.to_dict())
-in_coins.append(coin2.to_dict())
-
-out_coins = []
-out_coins.append(coin3.to_dict())
-
-timestamp = time()
-credit = 3.4
-data_uuid = str(uuid4()).replace('-','')
-
-ts1 = Transaction()
-ts1.new_transaction(in_coins, out_coins, timestamp, action, seller, buyer, data_uuid, credit)
-
-ts2 = Transaction()
-ts2.new_transaction(in_coins, out_coins, timestamp, action, seller, buyer, data_uuid, credit)
-
-
-index = 1
-timestamp2 = time()
-prev_hash = '1'
-
-transactions = []
-transactions.append(ts1.to_dict())
-transactions.append(ts2.to_dict())
-nonce = 100
-
-block = Block()
-block.new_block(index, timestamp2, prev_hash, transactions, nonce)
-block.self_save()
-print(block.to_dict())
-"""
-
+        self.hash_self = hash_block(self.to_dict())
