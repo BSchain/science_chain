@@ -142,7 +142,6 @@ class Blockchain(object):
         with open(file_name,'r') as f:
             self.chain = json.load(f)
 
-
     def store_chain(self,file_name='_blockchain2.json'):
         with open(file_name, 'w') as json_file:
             json_file.write(json.dumps(self.chain))

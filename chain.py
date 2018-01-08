@@ -8,11 +8,18 @@
 from block import *
 import requests
 from node import *
+import random
+
 class Chain:
     def __init__(self):
-        self.chain = []
+        # 1.the block_length indicate the last_block
+        # 2.can also using file_list to valid the block
+        # 3.save memory
+        # 4.only read total chain when chain needed
+        self.chain = [] # TODO: change to record the length of block
         self.current_transactions = []
         self.nodes = set()
+        self.chain_length = 0
 
     def __eq__(self, other):
         pass
@@ -32,9 +39,17 @@ class Chain:
     def __le__(self, other):
         pass
 
-    def is_valid(self):
-        return valid_chain(self.chain)
+    def valid_from_to(self,start_idx, end_idx): # TODO: valid the block from start_idx to end_idx
         pass
+
+    def is_valid(self):
+        return valid_chain(self.chain) # TODO: can change to valid_from_to(self,0, chain_length)
+        pass
+
+    def init_chain_length(self):
+        assert os.path.exists(config.BLOCK_SAVE_ROOT), ('blocks save file not exist')
+        block_list = os.listdir(config.BLOCK_SAVE_ROOT)
+        self.chain_length = len(block_list)
 
     def save_chain(self):
         assert os.path.exists(config.BLOCK_SAVE_ROOT), ('blocks save file not exist')
@@ -43,7 +58,6 @@ class Chain:
             f = open(block_file,'w')
             f.write(json.dumps(self.chain))
             f.close()
-
 
     def find_block_by_index(self, index):
         assert int(index) > 0, ('index must greater than 0')

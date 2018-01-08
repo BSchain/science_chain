@@ -8,7 +8,6 @@
 import config
 import json
 import os
-from coin import *
 from transaction import *
 from time import time
 from uuid import uuid4
@@ -52,7 +51,7 @@ class Block:
         with open(save_block_path, 'w') as json_file:
             json_file.write(json.dumps(self.to_dict()))
 
-    def to_dict(self):
+    def to_dict(self): # don't have self.hash_self
         block = {
             'index': self.index,
             'timestamp': self.timestamp,

@@ -8,9 +8,9 @@
 # TODO: add some methods to this file!
 import json
 import hashlib as hasher
+from block import *
 
-
-def hash_block(block):
+def hash_block(block): # json block
     block_str = json.dumps(block, sort_keys=True).encode() # here generate the block string
     return str(hasher.sha256(block_str).hexdigest())
 
@@ -58,3 +58,23 @@ def valid_chain(chain):
         last_block = block
         current_index += 1
     return True
+
+def json_to_bloc(block_json):
+    """
+    index
+    timestamp
+    transactions
+    prev_hash
+    nonce
+    :param block_json:
+    :return:
+    """
+    block = Block()
+    block.index = block_json['index']
+    block.timestamp = block_json['timestamp']
+    block.transactions = block_json['transactions']
+    block.prev_hash = block_json['prev_hash']
+    block.nonce = block_json['nonce']
+    # calculate the hash_self
+    block.hash_self = hash_block(block_json)
+    return block
