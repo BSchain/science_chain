@@ -14,7 +14,7 @@ chain for science data sharing
 * <font color=#0099ff size=5 face="黑体"> 4.用户查看订单信息 </font>
 >日期、行为、金额、区块信息；
 >
->页面显示：账户余额，账户详细交易信息(订单号，购买时间，出售方，购买数据名，购买价格，订单详情【可以显示数据详细信息，参考京东等服务页面】)
+>页面显示：账户余额，交易表和数据信息表(订单号，购买时间，出售方，购买数据名，数据详细信息，购买价格，订单详情【可以显示数据详细信息，参考京东等服务页面】)
 >
 >需要搜索交易表，交易id、购买方id、购买时间、出售方id、购买的数据id.
 * <font color=#0099ff size=5 face="黑体"> 5.账户充值 </font>
@@ -29,11 +29,11 @@ chain for science data sharing
 >out_coin表，保存当前的coin_uuid,并且保存该coin的owner为seller,同时标记当前的coin是否花费为unspent.
 <pre>transaction{
     in_coins = NULL
-    out_coins = {
+    out_coins = [{
         coin_uuid: generate_uuid_coin,
         number_coin: 100 ( equals to credit )
         owner: seller ('zpf_uuid')
-    }
+    }]
     timestamp = 1515855931.2668328
     action = 'recharge'
     seller = 'zpf_uuid'
@@ -43,31 +43,84 @@ chain for science data sharing
     credit = 100.0
 }</pre>
 * <font color=#0099ff size=5 face="黑体"> 6.用户上传数据 </font>
->上传数据、填写数据信息(填写数据名、数据简介信息、数据tag选择、数据售价(信用/次下载))
+>上传数据、填写数据信息(填写数据名、数据简介信息、数据tag选择、数据售价(信用/次下载)、数据上传时间，数据保存格式、数据保存服务器地址)
 >
 >数据库保存当前数据上传时间，保存当前数据的uuid,保存当前数据上传者的id,保存数据名，保存数据简介信息，保存数据tag,保存数据售价；
 * <font color=#0099ff size=5 face="黑体"> 7.用户搜索数据 </font>
->(0)模糊匹配(匹配数据名，数据上传者名，数据简介信息，数据tag)
+>(0)模糊匹配(匹配数据名，数据上传者名，数据简介信息，数据tag，数据上传时间，数据来源，保存格式)
 >
 >(1)按照数据上传时间搜索
 >
 >(2)选择数据保存格式进行搜索 (word,csv,excel,txt,jpg or 文本、压缩包、图片、视频)
 >
 >(3)选择数据来源(医疗、交通、农业、教育等)
-* <font color=#0099ff size=5 face="黑体"> 8.用户下载数据 </font>
+* <font color=#0099ff size=5 face="黑体"> 8.用户购买数据 </font>
+>购买表，生成购买信息，交易id,购买方id、购买时间、出售方id、购买的数据id,购买时间,购买价格,
+<pre>transaction{
+    in_coins = [{
+        coin_uuid: generate_uuid_coin,
+        number_coin: 100 ( equals to credit )
+        owner: seller ('zpf_uuid')
+    }]
+    out_coins = [{
+        coin_uuid: generate_uuid_coin,
+        number_coin: 100 ( equals to credit )
+        owner: seller ('zpf_uuid')
+    }]
+    timestamp = 1515855931.2668328
+    action = 'buy'
+    seller = 'zpf_uuid'
+    buyer = ''
+    reviewer = NULL
+    data_uuid = 'mydata_uuid'
+    credit = 100.0
+}</pre>
+
+用户表
+
+| 用户id | 登录名          | 密码    | 邮箱 |真实姓名| 手机号 |身份证号 |所在公司 |个人头衔| 居住地|
+| ----- |:-------------:| :------:|:-------:| :----:| :----:| :----:| :----:| :----:| :----:|
+
+个人信息表
+
+| 用户id |真实姓名| 手机号 |身份证号 |所在公司 |个人头衔| 居住地|
+| ----- |:----:| :----:| :----:| :----:| :----:| :----:|
+
+交易表
+
+| 交易id | 购买方id   | 出售方id    | 数据id |购买时间| 购买价格 |
+| ----- |:----------:| :------:|:-------:| :----:| :----:|
+
+数据表
+
+| 数据id | 数据拥有者id| 数据名| 数据简介信息 | 数据上传时间 | 数据来源 |数据保存格式 |数据tag |数据保存服务器地址|
+| ----- |:-------------:| :------:|:-------:| :----:| :----:| :----:| :----:| :----:|
+
+coin表
+
+| coin_id | coin拥有者id | coin大小 | coin是否花费 | coin创建时间|
+| ----- |:-------------:| :------:|:-------:|:-------:|
+
+用户账户表
+
+| 用户id | 用户账户余额| 密码    | 邮箱 |真实姓名| 手机号 |身份证号 |所在公司 |个人头衔| 居住地|
+| ----- |:-------------:| :------:|:-------:| :----:| :----:| :----:| :----:| :----:| :----:|
 
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+用户充值表
 
+| 用户id | 充值时间| 充值大小 | 充值前账户余额|充值后账户余额|充值coin_id|
+| ----- |:-------------:| :------:|:-------:| :----:|:---:|
 
+用户钱包表
 
+| 用户id | 钱包余额|可用coin_地址|
+| ----- |:------:| :----:|
 
+用户下载数据表
 
-
+| 用户id | 已下载数据id|
+| ----- |:------:|
 
 
 ## (1) block文件
