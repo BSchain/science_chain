@@ -12,6 +12,13 @@ class Coin:
         self.owner = None
 
     def new_coin(self, coin_uuid, number_coin, owner):
+        """
+
+        :param coin_uuid:
+        :param number_coin:
+        :param owner:
+        :return:
+        """
         self.coin_uuid = coin_uuid
         self.number_coin = number_coin
         self.owner = owner
