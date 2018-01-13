@@ -122,7 +122,7 @@ class Transaction:
         buyer = 'buaa_uuid'
         data_uuid = 'mydata_uuid'
         credit = 2.0
-
+        reviewer = NULL
     if action == 'download' :
         in_coins = NULL
         out_coins = NULL
@@ -132,7 +132,7 @@ class Transaction:
         buyer = 'buaa_uuid'
         data_uuid = 'mydata_uuid'
         credit = NULL
-
+        reviewer = NULL
     if action == 'login' : # [默认为buyer 登录]
         in_coins = NULL
         out_coins = NULL
@@ -141,8 +141,8 @@ class Transaction:
         # seller = 'zpf_uuid'
         buyer = 'buaa_uuid'
         data_uuid = NULL
-        credit = NUL
-
+        credit = NULL
+        reviewer = NULL
     if action == 'review_pass' : # [管理员审核通过]
         in_coins = NULL
         out_coins = NULL
@@ -150,20 +150,33 @@ class Transaction:
         action = 'review_pass'
         seller = 'zpf_uuid'
         buyer = NULL
-        reviewer = 'admin_uuid'
         data_uuid = 'mydata_uuid'
         credit = NULL
-
-    if action == 'review_reject' # [管理员审核不通过]
+        reviewer = 'admin_uuid'
+    if action == 'review_reject' : # [管理员审核不通过]
         in_coins = NULL
         out_coins = NULL
         timestamp = 1515846393.1849742
         action = 'review_reject'
         seller = 'zpf_uuid'
         buyer = NULL
-        reviewer = 'admin_uuid'
         data_uuid = 'mydata_uuid'
         credit = NULL
+        reviewer = 'admin_uuid'
+    if action == 'recharge' :
+        in_coins = NULL
+        out_coins = {
+            coin_uuid: generate_uuid_coin,
+            number_coin: credit( equals to credit)
+            owner: seller ('zpf_uuid')
+        }
+        timestamp = 1515846393.1849742
+        action = 'recharge'
+        seller = 'zpf_uuid'
+        buyer = NULL
+        reviewer = NULL
+        data_uuid = 'mydata_uuid'
+        credit = 100.0
     """
     # FIXME: later can change into more flexible
     def valid_transaction(self):
@@ -232,6 +245,15 @@ class Transaction:
             assert self.data_uuid is not None, ('Review_reject data, data_uuid should not be None, data_uuid:', self.data_uuid)
             assert self.credit is None, ('Review_reject data, credit should be None, credit:', self.credit)
             assert self.reviewer is not None, ('Review_reject data, reviewer should not be None, reviewer:', self.reviewer)
+            return True
+        elif self.action == 'recharge':
+            assert self.in_coins is None, ('Recharge, in_coins should be None, in_coins:', self.in_coins)
+            assert self.out_coins is not None, ('Recharge, out_coins should not be None, out_coins:', self.out_coins)
+            assert self.buyer is None, ('Recharge, buyer should be None, buyer:', self.buyer)
+            assert self.seller is not None, ('Recharge, seller should not be None, seller:', self.seller)
+            assert self.data_uuid is not None, ('Recharge, data_uuid should not be None, data_uuid:', self.data_uuid)
+            assert self.credit is not None, ('Recharge, credit should not be None, credit:', self.credit)
+            assert self.reviewer is None, ('Recharge, reviewer should be None, reviewer:', self.reviewer)
             return True
         else:
             pass
