@@ -7,8 +7,7 @@
 
 from block import *
 import requests
-from node import *
-import random
+from utils import *
 
 class Chain:
     def __init__(self):
@@ -54,7 +53,7 @@ class Chain:
     def save_chain(self):
         assert os.path.exists(config.BLOCK_SAVE_ROOT), ('blocks save file not exist')
         for index,each_block in enumerate(self.chain):
-            block_file = self.get_block_file(index+1)
+            block_file = get_block_file(index+1)
             f = open(block_file,'w')
             f.write(json.dumps(self.chain))
             f.close()
@@ -62,15 +61,11 @@ class Chain:
     def find_block_by_index(self, index):
         assert int(index) > 0, ('index must greater than 0')
         assert int(index) >= int(len(self.chain)), ('index must smaller than chain_length',index,len(self.chain))
-        block_file = self.get_block_file(index)
+        block_file = get_block_file(index)
         assert os.path.exists(block_file), (block_file,'not exist')
         with open(block_file, 'r') as f:
             block = json.load(f)
         return block
-
-    @staticmethod
-    def get_block_file(index):
-        return config.BLOCK_SAVE_ROOT + str(index) + config.BLOCK_SAVE_SUFFIX
 
     # use a file to store index and hash
     # def find_block_by_hash(self, hash):

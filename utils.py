@@ -35,6 +35,48 @@ def valid_nonce(last_nonce, nonce, diff=4):
     mine_hash = hasher.sha256(mine).hexdigest()
     return mine_hash[:diff] == '0' * diff
 
+# return to json_block
+def get_block_by_index_json(index):
+    block_file = get_block_file(index)
+    assert os.path.exists(block_file), (block_file, 'not exist')
+    with open(block_file, 'r') as f:
+        json_block = json.load(f)
+    return json_block
+
+def get_block_by_index_object(index):
+    return json_to_bloc(get_block_by_index_json(index))
+
+def json_to_bloc(block_json):
+    """
+    index
+    timestamp
+    transactions
+    prev_hash
+    nonce
+    :param block_json:
+    :return:
+    """
+    block = Block()
+    block.index = block_json['index']
+    block.timestamp = block_json['timestamp']
+    block.transactions = block_json['transactions']
+    block.prev_hash = block_json['prev_hash']
+    block.nonce = block_json['nonce']
+    # calculate the hash_self
+    block.hash_self = hash_block(block_json)
+    return block
+
+def get_block_file(index):
+    return config.BLOCK_SAVE_ROOT + str(index) + config.BLOCK_SAVE_SUFFIX
+
+def valid_block(block):
+    if block.index == 1:
+        return True
+    prev_index = block.index - 1
+    nonce = block.nonce
+    last_nonce = get_block_by_index_object(prev_index).nonce
+    return valid_nonce(last_nonce=last_nonce, nonce=nonce)
+
 
 def valid_chain(chain):
     last_block = chain[0]
@@ -58,23 +100,3 @@ def valid_chain(chain):
         last_block = block
         current_index += 1
     return True
-
-def json_to_bloc(block_json):
-    """
-    index
-    timestamp
-    transactions
-    prev_hash
-    nonce
-    :param block_json:
-    :return:
-    """
-    block = Block()
-    block.index = block_json['index']
-    block.timestamp = block_json['timestamp']
-    block.transactions = block_json['transactions']
-    block.prev_hash = block_json['prev_hash']
-    block.nonce = block_json['nonce']
-    # calculate the hash_self
-    block.hash_self = hash_block(block_json)
-    return block
