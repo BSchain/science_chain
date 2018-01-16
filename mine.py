@@ -33,7 +33,8 @@ def mine(block_chain): # TODO: need to consider some condition
     index = len(block_chain.chain) + 1 # get block height
 
     block = Block()
+    # transactions = 20
+    # or other
     block.new_block(index=index, timestamp=time(), prev_hash=prev_hash, transactions=block_chain.current_transactions,nonce=nonce)
     block.save_block() # save to file (one block one file)
     block_chain.reset_transaction() # reset the current_transaction
-

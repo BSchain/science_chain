@@ -8,7 +8,6 @@
 import config
 import json
 import os
-from transaction import *
 from time import time
 from uuid import uuid4
 from utils import *
@@ -18,7 +17,9 @@ class Block:
         self.index = None
         self.timestamp = None
         self.prev_hash = None
-        self.transactions = None
+        # need to change to list
+        # mine only the first 20 or 10 transcations
+        self.transactions = []
         self.nonce = None
         # just to calculate the self.hash
         self.hash_self = None
@@ -71,3 +72,25 @@ class Block:
         self.transactions = transactions
         self.nonce = nonce
         self.hash_self = hash_block(self.to_dict())
+
+
+    @staticmethod
+    def json_to_bloc(block_json):
+        """
+        index
+        timestamp
+        transactions
+        prev_hash
+        nonce
+        :param block_json:
+        :return:
+        """
+        block = Block()
+        block.index = block_json['index']
+        block.timestamp = block_json['timestamp']
+        block.transactions = block_json['transactions']
+        block.prev_hash = block_json['prev_hash']
+        block.nonce = block_json['nonce']
+        # calculate the hash_self
+        block.hash_self = hash_block(block_json)
+        return block

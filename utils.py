@@ -8,12 +8,12 @@
 # TODO: add some methods to this file!
 import json
 import hashlib as hasher
-from block import *
+from config import *
+from block import  *
 
 def hash_block(block): # json block
     block_str = json.dumps(block, sort_keys=True).encode() # here generate the block string
     return str(hasher.sha256(block_str).hexdigest())
-
 
 def get_diff(block):
     """
@@ -43,28 +43,9 @@ def get_block_by_index_json(index):
         json_block = json.load(f)
     return json_block
 
-def get_block_by_index_object(index):
-    return json_to_bloc(get_block_by_index_json(index))
 
-def json_to_bloc(block_json):
-    """
-    index
-    timestamp
-    transactions
-    prev_hash
-    nonce
-    :param block_json:
-    :return:
-    """
-    block = Block()
-    block.index = block_json['index']
-    block.timestamp = block_json['timestamp']
-    block.transactions = block_json['transactions']
-    block.prev_hash = block_json['prev_hash']
-    block.nonce = block_json['nonce']
-    # calculate the hash_self
-    block.hash_self = hash_block(block_json)
-    return block
+def get_block_by_index_object(index):
+    return Block.json_to_bloc(get_block_by_index_json(index))
 
 def get_block_file(index):
     return config.BLOCK_SAVE_ROOT + str(index) + config.BLOCK_SAVE_SUFFIX
